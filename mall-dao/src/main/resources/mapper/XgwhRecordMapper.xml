@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhRecordMapper">
+    <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhRecord">
+        <id column="record_id" jdbcType="INTEGER" property="recordId"/>
+        <result column="record_money" jdbcType="DECIMAL" property="recordMoney"/>
+        <result column="record_direct" jdbcType="TINYINT" property="recordDirect"/>
+        <result column="record_desc" jdbcType="VARCHAR" property="recordDesc"/>
+        <result column="record_type" jdbcType="TINYINT" property="recordType"/>
+        <result column="member_id" jdbcType="INTEGER" property="memberId"/>
+        <result column="record_time" jdbcType="INTEGER" property="recordTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        record_id, record_money, record_direct, record_desc, record_type, member_id,record_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_record
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByMemberId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_record
+        where member_id = #{memberId,jdbcType=INTEGER}
+    </select>
+    <select id="selectByMemberIdWalletId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_record
+        where member_id = #{memberId,jdbcType=INTEGER} AND record_type = #{recordType,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from xgwh_record
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.xg.mall.po.XgwhRecord">
+        insert into xgwh_record (record_id, record_money, record_direct,
+        record_desc, record_type, member_id
+        )
+        values (#{recordId,jdbcType=INTEGER}, #{recordMoney,jdbcType=DECIMAL}, #{recordDirect,jdbcType=TINYINT},
+        #{recordDesc,jdbcType=VARCHAR}, #{recordType,jdbcType=TINYINT}, #{memberId,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhRecord">
+        insert into xgwh_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                record_id,
+            </if>
+            <if test="recordMoney != null">
+                record_money,
+            </if>
+            <if test="recordDirect != null">
+                record_direct,
+            </if>
+            <if test="recordDesc != null">
+                record_desc,
+            </if>
+            <if test="recordType != null">
+                record_type,
+            </if>
+            <if test="memberId != null">
+                member_id,
+            </if>
+            <if test="recordTime != null">
+                record_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="recordId != null">
+                #{recordId,jdbcType=INTEGER},
+            </if>
+            <if test="recordMoney != null">
+                #{recordMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="recordDirect != null">
+                #{recordDirect,jdbcType=TINYINT},
+            </if>
+            <if test="recordDesc != null">
+                #{recordDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="recordType != null">
+                #{recordType,jdbcType=TINYINT},
+            </if>
+            <if test="memberId != null">
+                #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="recordTime != null">
+                #{recordTime,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhRecord">
+        update xgwh_record
+        <set>
+            <if test="recordMoney != null">
+                record_money = #{recordMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="recordDirect != null">
+                record_direct = #{recordDirect,jdbcType=TINYINT},
+            </if>
+            <if test="recordDesc != null">
+                record_desc = #{recordDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="recordType != null">
+                record_type = #{recordType,jdbcType=TINYINT},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhRecord">
+        update xgwh_record
+        set record_money = #{recordMoney,jdbcType=DECIMAL},
+        record_direct = #{recordDirect,jdbcType=TINYINT},
+        record_desc = #{recordDesc,jdbcType=VARCHAR},
+        record_type = #{recordType,jdbcType=TINYINT},
+        member_id = #{memberId,jdbcType=INTEGER}
+        where record_id = #{recordId,jdbcType=INTEGER}
+    </update>
+</mapper>

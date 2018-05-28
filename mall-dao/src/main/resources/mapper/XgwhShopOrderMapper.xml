@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhShopOrderMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhShopOrder">
+    <id column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="pay_type" jdbcType="TINYINT" property="payType" />
+    <result column="address_id" jdbcType="INTEGER" property="addressId" />
+    <result column="contact_name" jdbcType="VARCHAR" property="contactName" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+
+    <result column="total_money" jdbcType="VARCHAR" property="totalMoney" />
+    <result column="today_money" jdbcType="VARCHAR" property="todayMoney" />
+    <result column="yesterday_money" jdbcType="VARCHAR" property="yesterdayMoney" />
+    <result column="count_orders" jdbcType="VARCHAR" property="countOrders" />
+    <result column="count_members" jdbcType="VARCHAR" property="countMembers" />
+    <result column="today_withdraw" jdbcType="VARCHAR" property="todayWithdraw" />
+    <result column="today_alipay_buy" jdbcType="VARCHAR" property="todayAlipayBuy" />
+
+      <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+      <result column="goods_cover" jdbcType="VARCHAR" property="goodsCover"/>
+      <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_id, order_sn, total_price, member_id, pay_type, address_id, contact_name, mobile, 
+    address, order_status, add_time
+  </sql>
+
+  <select id="selectALL"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_shop_order
+  </select>
+
+  <select id="count"  resultType="java.lang.Double"  >
+        select COALESCE(sum(total_price),0) from xgwh_shop_order
+        where member_id = #{id,jdbcType=INTEGER} and order_status = 1
+ </select>
+    <select id="count_order" parameterType="com.xg.mall.po.XgwhShopOrder" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from xgwh_shop_order
+        <where>
+            <if test="orderId !=null">
+                order_id = #{orderId,jdbcType=INTEGER}
+            </if>
+            <if test="orderSn !=null and orderSn !=''">
+                AND order_sn = #{orderSn,jdbcType=VARCHAR}
+            </if>
+            <if test="memberId !=null">
+                AND member_id = #{memberId,jdbcType=INTEGER}
+            </if>
+            <if test="payType !=null">
+                AND pay_type = #{payType,jdbcType=TINYINT}
+            </if>
+            <if test="orderStatus !=null">
+                AND order_status = #{orderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="addTime!=null and intOrderEndTime!=null and addTime!='' and intOrderEndTime!=''">
+                AND add_time BETWEEN #{addTime,jdbcType=INTEGER} and #{intOrderEndTime,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+  <select id="select" parameterType="com.xg.mall.po.XgwhShopOrder" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_shop_order
+    <where>
+      <if test="orderId !=null">
+          order_id = #{orderId,jdbcType=INTEGER}
+      </if>
+      <if test="orderSn !=null and orderSn !=''">
+       AND order_sn = #{orderSn,jdbcType=VARCHAR}
+      </if>
+      <if test="memberId !=null">
+        AND member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="payType !=null">
+        AND pay_type = #{payType,jdbcType=TINYINT}
+      </if>
+      <if test="orderStatus !=null">
+        AND order_status = #{orderStatus,jdbcType=INTEGER}
+      </if>
+        <if test="addTime!=null and intOrderEndTime!=null and addTime!='' and intOrderEndTime!=''">
+            AND add_time BETWEEN #{addTime,jdbcType=INTEGER} and #{intOrderEndTime,jdbcType=INTEGER}
+      </if>
+    </where>
+      order by order_id desc LIMIT #{page,jdbcType=INTEGER},#{pageNum,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_shop_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+    <select id="selectOrdersByMemberId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT
+        o.order_id, o.order_sn, total_price, o.member_id, pay_type, address_id, contact_name, mobile,
+        address, order_status, o.add_time,d.goods_id
+        FROM xgwh_shop_order o LEFT JOIN xgwh_shop_order_detail d ON o.order_id = d.order_id
+        WHERE o.member_id = #{memberId,jdbcType=INTEGER}
+    </select>
+  <sql id="Base_Column_List_statistics">
+    total_money,today_money,yesterday_money,count_orders,count_members,today_withdraw,today_alipay_buy
+  </sql>
+  <select id="select_statistics"  resultMap="BaseResultMap">
+    select
+    sum(o.total_price) as total_money,count(o.order_id) as count_orders,(select count(member_id)  from xgwh_member) as count_members,(select sum(total_price)
+     from xgwh_shop_order where add_time > UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))) as today_money,(select sum(withdraw_money) from xgwh_withdraw_deposit where
+      add_time > UNIX_TIMESTAMP(CAST(SYSDATE()AS DATE))) as today_withdraw,(select sum(total_price) from xgwh_shop_order where pay_type = 0)
+     as today_alipay_buy
+    from xgwh_shop_order as o
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_shop_order
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhShopOrder">
+    insert into xgwh_shop_order (order_id, order_sn, total_price, 
+      member_id, pay_type, address_id, 
+      contact_name, mobile, address, 
+      order_status, add_time)
+    values (#{orderId,jdbcType=INTEGER}, #{orderSn,jdbcType=VARCHAR}, #{totalPrice,jdbcType=DECIMAL}, 
+      #{memberId,jdbcType=INTEGER}, #{payType,jdbcType=TINYINT}, #{addressId,jdbcType=INTEGER}, 
+      #{contactName,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{orderStatus,jdbcType=TINYINT}, #{addTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhShopOrder">
+    insert into xgwh_shop_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="addressId != null">
+        address_id,
+      </if>
+      <if test="contactName != null">
+        contact_name,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="orderStatus != null">
+        order_status,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="addressId != null">
+        #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null">
+        #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        #{orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhShopOrder">
+    update xgwh_shop_order
+    <set>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=TINYINT},
+      </if>
+      <if test="addressId != null">
+        address_id = #{addressId,jdbcType=INTEGER},
+      </if>
+      <if test="contactName != null">
+        contact_name = #{contactName,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="orderStatus != null">
+        order_status = #{orderStatus,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhShopOrder">
+    update xgwh_shop_order
+    set order_sn = #{orderSn,jdbcType=VARCHAR},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      member_id = #{memberId,jdbcType=INTEGER},
+      pay_type = #{payType,jdbcType=TINYINT},
+      address_id = #{addressId,jdbcType=INTEGER},
+      contact_name = #{contactName,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      order_status = #{orderStatus,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=INTEGER}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

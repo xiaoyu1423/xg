@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhAreaMapper">
+    <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhArea">
+        <id column="area_id" jdbcType="INTEGER" property="areaId"/>
+        <result column="area_parent_id" jdbcType="INTEGER" property="areaParentId"/>
+        <result column="area_name" jdbcType="VARCHAR" property="areaName"/>
+        <result column="area_type" jdbcType="TINYINT" property="areaType"/>
+        <result column="add_time" jdbcType="INTEGER" property="addTime"/>
+        <result column="update_time" jdbcType="INTEGER" property="updateTime"/>
+        <result column="province_val" jdbcType="INTEGER" property="provinceVal"/>
+        <result column="city_val" jdbcType="INTEGER" property="cityVal"/>
+        <result column="county_val" jdbcType="INTEGER" property="countyVal"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        area_id, area_parent_id, area_name, area_type, add_time, update_time
+    </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_area
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </select>
+    <select id="selectNameByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_area
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAreas" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_area
+        where area_parent_id = #{areaParentId,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from xgwh_area
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.xg.mall.po.XgwhArea">
+        insert into xgwh_area (area_id, arae_parent_id, area_name,
+        area_type, add_time, update_time
+        )
+        values (#{areaId,jdbcType=INTEGER}, #{araeParentId,jdbcType=INTEGER}, #{areaName,jdbcType=VARCHAR},
+        #{areaType,jdbcType=TINYINT}, #{addTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhArea">
+        insert into xgwh_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">
+                area_id,
+            </if>
+            <if test="araeParentId != null">
+                arae_parent_id,
+            </if>
+            <if test="areaName != null">
+                area_name,
+            </if>
+            <if test="areaType != null">
+                area_type,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="areaId != null">
+                #{areaId,jdbcType=INTEGER},
+            </if>
+            <if test="araeParentId != null">
+                #{araeParentId,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                #{areaType,jdbcType=TINYINT},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhArea">
+        update xgwh_area
+        <set>
+            <if test="araeParentId != null">
+                arae_parent_id = #{araeParentId,jdbcType=INTEGER},
+            </if>
+            <if test="areaName != null">
+                area_name = #{areaName,jdbcType=VARCHAR},
+            </if>
+            <if test="areaType != null">
+                area_type = #{areaType,jdbcType=TINYINT},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=INTEGER},
+            </if>
+        </set>
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhArea">
+        update xgwh_area
+        set arae_parent_id = #{araeParentId,jdbcType=INTEGER},
+        area_name = #{areaName,jdbcType=VARCHAR},
+        area_type = #{areaType,jdbcType=TINYINT},
+        add_time = #{addTime,jdbcType=INTEGER},
+        update_time = #{updateTime,jdbcType=INTEGER}
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </update>
+</mapper>

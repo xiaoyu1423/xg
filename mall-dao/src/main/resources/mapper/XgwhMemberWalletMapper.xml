@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhMemberWalletMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhMemberWallet">
+    <id column="member_wallet_id" jdbcType="INTEGER" property="memberWalletId" />
+    <result column="member_wallet_name" jdbcType="VARCHAR" property="memberWalletName" />
+    <result column="member_wallet_money" jdbcType="DECIMAL" property="memberWalletMoney" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="wallet_id" jdbcType="INTEGER" property="walletId" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="shopincome" jdbcType="DECIMAL" property="shopincome" />
+      <result column="FYQ" jdbcType="DECIMAL" property="FYQ"/>
+    <result column="grain" jdbcType="DECIMAL" property="grain" />
+    <result column="withdrawMoney" jdbcType="DECIMAL" property="withdrawMoney" />
+    <result column="surplus" jdbcType="DECIMAL" property="surplus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    member_wallet_id, member_wallet_name, member_wallet_money, member_id, wallet_id, 
+    add_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_wallet_id = #{memberWalletId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMemberId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+  <select id="selectMoneyByWalletId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_id = #{memberId,jdbcType=INTEGER} AND  wallet_id = #{walletId,jdbcType=INTEGER};
+  </select>
+  <select id="selectShopincome"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_id = #{memberId,jdbcType=INTEGER} AND  wallet_id = 1;
+  </select>
+  <select id="select"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+  </select>
+    <select id="selectFyq"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_id = #{memberId,jdbcType=INTEGER} AND  wallet_id = 2
+</select>
+    <select id="selectQb"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from xgwh_member_wallet
+        where member_id = #{memberId,jdbcType=INTEGER} AND  wallet_id = #{walletId,jdbcType=INTEGER}
+    </select>
+    <select id="selectPrimaryKEY" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_member_wallet
+        where member_id = #{memberId,jdbcType=INTEGER} AND wallet_id = #{walletId,jdbcType=INTEGER}
+    </select>
+  <select id="selectGrain"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_wallet
+    where member_id = #{memberId,jdbcType=INTEGER} AND  wallet_id = 6
+  </select>
+    <select id="selectShopincomeByMemberId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_member_wallet
+        where member_id = #{memberId,jdbcType=INTEGER} AND wallet_id = 1
+    </select>
+    <select id="selectMoneyByMemberId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_member_wallet
+        where member_id = #{memberId,jdbcType=INTEGER} AND wallet_id = #{walletId,jdbcType=INTEGER}
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_member_wallet
+    where member_wallet_id = #{memberWalletId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    insert into xgwh_member_wallet (member_wallet_id, member_wallet_name, 
+      member_wallet_money, member_id, wallet_id, 
+      add_time, update_time)
+    values (#{memberWalletId,jdbcType=INTEGER}, #{memberWalletName,jdbcType=VARCHAR}, 
+      #{memberWalletMoney,jdbcType=DECIMAL}, #{memberId,jdbcType=INTEGER}, #{walletId,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    insert into xgwh_member_wallet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberWalletId != null">
+        member_wallet_id,
+      </if>
+      <if test="memberWalletName != null">
+        member_wallet_name,
+      </if>
+      <if test="memberWalletMoney != null">
+        member_wallet_money,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="walletId != null">
+        wallet_id,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberWalletId != null">
+        #{memberWalletId,jdbcType=INTEGER},
+      </if>
+      <if test="memberWalletName != null">
+      #{memberWalletName,jdbcType=VARCHAR},
+    </if>
+      <if test="memberWalletMoney != null">
+        #{memberWalletMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="walletId != null">
+        #{walletId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    <set>
+      <if test="memberWalletName != null">
+        member_wallet_name = #{memberWalletName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberWalletMoney != null">
+        member_wallet_money = #{memberWalletMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="walletId != null">
+        wallet_id = #{walletId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where member_wallet_id = #{memberWalletId,jdbcType=INTEGER}
+  </update>
+    <update id="updateShopincome" parameterType="com.xg.mall.po.XgwhMemberWallet">
+        update xgwh_member_wallet
+        <set>
+            <if test="memberWalletName != null">
+                member_wallet_name = #{memberWalletName,jdbcType=VARCHAR},
+            </if>
+            <if test="memberWalletMoney != null">
+                member_wallet_money = #{FYQ,jdbcType=DECIMAL},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="walletId != null">
+                wallet_id = #{walletId,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=INTEGER},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=INTEGER} AND wallet_id = 1
+    </update>
+    <update id="updateFyq" parameterType="com.xg.mall.po.XgwhMemberWallet">
+        update xgwh_member_wallet
+        <set>
+            <if test="memberWalletName != null">
+                member_wallet_name = #{memberWalletName,jdbcType=VARCHAR},
+            </if>
+            <if test="memberWalletMoney != null">
+                member_wallet_money = #{FYQ,jdbcType=DECIMAL},
+            </if>
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=INTEGER},
+            </if>
+            <if test="walletId != null">
+                wallet_id = #{walletId,jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=INTEGER},
+            </if>
+        </set>
+        where member_id = #{memberId,jdbcType=INTEGER} AND wallet_id = 2
+    </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set member_wallet_name = #{memberWalletName,jdbcType=VARCHAR},
+      member_wallet_money = #{memberWalletMoney,jdbcType=DECIMAL},
+      member_id = #{memberId,jdbcType=INTEGER},
+      wallet_id = #{walletId,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where member_wallet_id = #{memberWalletId,jdbcType=INTEGER}
+  </update>
+  <update id="withdraw" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = 0,
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_wallet_id = #{memberWalletId,jdbcType=INTEGER} AND member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = #{walletId,jdbcType=INTEGER};
+  </update>
+  <update id="withdrawss" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = #{surplus,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_wallet_id = #{memberWalletId,jdbcType=INTEGER} AND member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = #{walletId,jdbcType=INTEGER};
+  </update>
+  <update id="withdraws" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = #{shopincome,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = 1;
+  </update>
+  <update id="addShopincome" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = #{shopincome,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = 1;
+  </update>
+    <update id="reduceFyq" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = #{FYQ,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = 2;
+  </update>
+  <update id="addGrain" parameterType="com.xg.mall.po.XgwhMemberWallet">
+    update xgwh_member_wallet
+    set
+      member_wallet_money = #{grain,jdbcType=DECIMAL},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where  member_id = #{memberId,jdbcType=INTEGER} AND
+    wallet_id = 6;
+  </update>
+</mapper>

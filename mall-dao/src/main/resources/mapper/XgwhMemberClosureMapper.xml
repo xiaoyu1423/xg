@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhMemberClosureMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhMemberClosure">
+    <result column="ancestor" jdbcType="INTEGER" property="ancestor" />
+    <result column="descendant" jdbcType="INTEGER" property="descendant" />
+    <result column="distance" jdbcType="INTEGER" property="distance" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_username" jdbcType="VARCHAR" property="memberUsername" />
+    <result column="member_nickname" jdbcType="VARCHAR" property="memberNickname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ancestor, descendant, distance,(select member_username
+    from  xgwh_member WHERE member_id=descendant)
+    as memberUsername,
+    (select member_nickname
+    from  xgwh_member WHERE member_id=descendant)
+    as memberNickname
+  </sql>
+  <select id="selectDescendant" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from xgwh_member_closure
+      where ancestor = #{descendant,jdbcType=INTEGER}
+      AND distance >= #{distance,jdbcType=INTEGER}
+      ORDER BY
+      distance LIMIT #{page} , #{number_page}
+  </select>
+    <select id="selectItDescendant" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_member_closure
+        where ancestor = #{descendant,jdbcType=INTEGER}
+        AND distance = #{distance,jdbcType=INTEGER}
+        ORDER BY
+        distance LIMIT #{page} , #{number_page}
+  </select>
+  <select id="selectByAncestor" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    ancestor,descendant,distance
+    from xgwh_member_closure
+    where ancestor = #{ancestor,jdbcType=INTEGER}
+  </select>
+    <select id="b_count" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from xgwh_member_closure
+        where ancestor = #{descendant,jdbcType=INTEGER}
+        AND distance >= #{distance,jdbcType=INTEGER}
+    </select>
+    <select id="s_count" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from xgwh_member_closure
+        where ancestor = #{descendant,jdbcType=INTEGER}
+        AND distance = #{distance,jdbcType=INTEGER}
+    </select>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhMemberClosure">
+    insert into xgwh_member_closure (ancestor, descendant, distance
+      )
+    values (#{ancestor,jdbcType=INTEGER}, #{descendant,jdbcType=INTEGER}, #{distance,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhMemberClosure">
+    insert into xgwh_member_closure
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="ancestor != null">
+        ancestor,
+      </if>
+      <if test="descendant != null">
+        descendant,
+      </if>
+      <if test="distance != null">
+        distance,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="ancestor != null">
+        #{ancestor,jdbcType=INTEGER},
+      </if>
+      <if test="descendant != null">
+        #{descendant,jdbcType=INTEGER},
+      </if>
+      <if test="distance != null">
+        #{distance,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>

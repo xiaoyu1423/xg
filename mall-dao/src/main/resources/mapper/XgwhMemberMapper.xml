@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhMemberMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhMember">
+    <id column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="member_username" jdbcType="VARCHAR" property="memberUsername" />
+    <result column="member_password" jdbcType="VARCHAR" property="memberPassword" />
+    <result column="member_gender" jdbcType="TINYINT" property="memberGender" />
+    <result column="member_nickname" jdbcType="VARCHAR" property="memberNickname" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="last_time" jdbcType="INTEGER" property="lastTime" />
+    <result column="last_ip" jdbcType="VARCHAR" property="lastIp" />
+    <result column="member_mobile" jdbcType="VARCHAR" property="memberMobile" />
+    <result column="check_code" jdbcType="VARCHAR" property="checkCode" />
+
+      <result column="member_true_name" jdbcType="VARCHAR" property="memberTrueName" />
+      <result column="member_mobile" jdbcType="VARCHAR" property="memberMobile" />
+      <result column="member_idcard" jdbcType="VARCHAR" property="memberIdcard" />
+      <result column="member_bank_name" jdbcType="VARCHAR" property="memberBankName" />
+      <result column="member_bank_no" jdbcType="VARCHAR" property="memberBankNo" />
+      <result column="member_aliypay" jdbcType="VARCHAR" property="memberAliypay" />
+
+      <result column="member_wallet_name" jdbcType="VARCHAR" property="memberWalletName" />
+      <result column="member_wallet_money" jdbcType="DECIMAL" property="memberWalletMoney" />
+      <result column="wallet_id" jdbcType="INTEGER" property="walletId" />
+      <result column="member_status" jdbcType="TINYINT" property="memberStatus"/>
+
+      <result column="shop_income" jdbcType="DECIMAL" property="shopIncome"/>
+      <result column="fyq" jdbcType="DECIMAL" property="fyq"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+      member_id, member_username, member_password, member_gender, member_nickname, add_time,
+      last_time, last_ip,member_status
+  </sql>
+    <select id="count" parameterType="com.xg.mall.po.XgwhMember" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from xgwh_member
+        <where>
+            <if test="memberId!=null">
+                member_id = #{memberId,jdbcType=INTEGER}
+            </if>
+            <if test="memberUsername!=null and memberUsername!=''">
+                AND member_username = #{memberUsername,jdbcType=VARCHAR}
+            </if>
+            <if test="memberGender!=null">
+                AND member_gender = #{memberGender,jdbcType=INTEGER}
+            </if>
+            <if test="memberNickname!=null">
+                AND member_nickname = #{memberNickname,jdbcType=VARCHAR}
+            </if>
+            <if test="addTime!=null and intTime!=null and addTime!='' and intTime!=''">
+                AND add_time BETWEEN #{addTime,jdbcType=INTEGER} and #{intTime,jdbcType=INTEGER}
+            </if>
+            <if test="memberStatus!=null">
+                AND member_status = #{memberStatus,jdbcType=TINYINT}
+            </if>
+        </where>
+    </select>
+  <select id="select" parameterType="com.xg.mall.po.XgwhMember" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member
+    <where>
+      <if test="memberId!=null">
+        member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="memberUsername!=null and memberUsername!=''">
+        AND member_username = #{memberUsername,jdbcType=VARCHAR}
+      </if>
+      <if test="memberGender!=null">
+        AND  member_gender = #{memberGender,jdbcType=INTEGER}
+      </if>
+      <if test="memberNickname!=null">
+        AND member_nickname = #{memberNickname,jdbcType=VARCHAR}
+      </if>
+        <if test="addTime!=null and intTime!=null and addTime!='' and intTime!=''">
+            AND add_time BETWEEN #{addTime,jdbcType=INTEGER} and #{intTime,jdbcType=INTEGER}
+      </if>
+        <if test="memberStatus!=null">
+            AND member_status = #{memberStatus,jdbcType=TINYINT}
+        </if>
+    </where>
+      order by member_id desc LIMIT #{page,jdbcType=INTEGER},#{pageNum,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMemberName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member
+    where member_username = #{memberUsername,jdbcType=VARCHAR}
+  </select>
+  <select id="selectPwdByMemberId" resultMap="BaseResultMap">
+    SELECT
+      member_id, member_username, member_password, member_gender, member_nickname, add_time,
+    last_time, last_ip
+      FROM xgwh_member WHERE member_username = #{memberUsername,jdbcType=VARCHAR};
+  </select>
+    <select id="selectMember" resultMap="BaseResultMap">
+        SELECT
+        m.member_id, m.member_nickname,m.member_username, m.member_status, s.member_mobile,s.member_true_name
+        FROM xgwh_member m LEFT JOIN xgwh_member_secrecy s ON m.member_id = s.member_id
+        WHERE m.member_id = #{memberId,jdbcType=VARCHAR};
+    </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhMember">
+    insert into xgwh_member (member_id, member_username, member_password,
+      member_gender, member_nickname, add_time,
+      last_time, last_ip)
+    values (#{memberId,jdbcType=INTEGER}, #{memberUsername,jdbcType=VARCHAR}, #{memberPassword,jdbcType=VARCHAR},
+      #{memberGender,jdbcType=TINYINT}, #{memberNickname,jdbcType=VARCHAR}, #{addTime,jdbcType=INTEGER},
+      #{lastTime,jdbcType=INTEGER}, #{lastIp,jdbcType=VARCHAR})
+  </insert>
+  <insert id="memberReg" parameterType="com.xg.mall.po.XgwhMember">
+    insert into xgwh_member (member_id, member_username, member_password)
+    values (#{memberId,jdbcType=INTEGER}, #{memberUsername,jdbcType=VARCHAR}, #{memberPassword,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhMember" keyProperty="memberId" useGeneratedKeys="true" >
+    insert into xgwh_member
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="memberUsername != null">
+        member_username,
+      </if>
+      <if test="memberPassword != null">
+        member_password,
+      </if>
+      <if test="memberGender != null">
+        member_gender,
+      </if>
+      <if test="memberNickname != null">
+        member_nickname,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="lastTime != null">
+        last_time,
+      </if>
+      <if test="lastIp != null">
+        last_ip,
+      </if>
+        <!--<if test="memberTrueName != null">-->
+            <!--member_true_name,-->
+        <!--</if>-->
+        <!--<if test="memberMobile != null">-->
+            <!--member_mobile,-->
+        <!--</if>-->
+        <!--<if test="memberIdcard != null">-->
+            <!--member_idcard,-->
+        <!--</if>-->
+        <!--<if test="memberBankName != null">-->
+            <!--member_bank_name,-->
+        <!--</if>-->
+        <!--<if test="memberBankNo != null">-->
+            <!--member_bank_no,-->
+        <!--</if>-->
+        <!--<if test="memberAliypay != null">-->
+            <!--member_aliypay,-->
+        <!--</if>-->
+        <!--<if test="memberWalletName != null">-->
+            <!--member_wallet_name,-->
+        <!--</if>-->
+        <!--<if test="memberWalletMoney != null">-->
+            <!--member_wallet_money,-->
+        <!--</if>-->
+        <!--<if test="walletId != null">-->
+            <!--wallet_id,-->
+        <!--</if>-->
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberUsername != null">
+        #{memberUsername,jdbcType=VARCHAR},
+      </if>
+      <if test="memberPassword != null">
+        #{memberPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="memberGender != null">
+        #{memberGender,jdbcType=TINYINT},
+      </if>
+      <if test="memberNickname != null">
+        #{memberNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null">
+        #{lastTime,jdbcType=INTEGER},
+      </if>
+      <if test="lastIp != null">
+        #{lastIp,jdbcType=VARCHAR},
+      </if>
+        <!--<if test="memberTrueName != null">-->
+            <!--#{memberTrueName,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberMobile != null">-->
+            <!--#{memberMobile,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberIdcard != null">-->
+            <!--#{memberIdcard,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberBankName != null">-->
+            <!--#{memberBankName,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberBankNo != null">-->
+            <!--#{memberBankNo,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberAliypay != null">-->
+            <!--#{memberAliypay,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberWalletName != null">-->
+            <!--#{memberWalletName,jdbcType=VARCHAR},-->
+        <!--</if>-->
+        <!--<if test="memberWalletMoney != null">-->
+            <!--#{memberWalletMoney,jdbcType=DECIMAL},-->
+        <!--</if>-->
+        <!--<if test="walletId != null">-->
+            <!--#{walletId,jdbcType=INTEGER},-->
+        <!--</if>-->
+    </trim>
+    <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="memberId">-->
+      <!--SELECT @@IDENTITY AS member_id-->
+    <!--</selectKey>-->
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhMember">
+    update xgwh_member
+    <set>
+      <if test="memberUsername != null">
+        member_username = #{memberUsername,jdbcType=VARCHAR},
+      </if>
+        <if test="memberPassword != null  and memberPassword != ''">
+        member_password = #{memberPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="memberGender != null">
+        member_gender = #{memberGender,jdbcType=TINYINT},
+      </if>
+      <if test="memberNickname != null">
+        member_nickname = #{memberNickname,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="lastTime != null">
+        last_time = #{lastTime,jdbcType=INTEGER},
+      </if>
+      <if test="lastIp != null">
+        last_ip = #{lastIp,jdbcType=VARCHAR},
+      </if>
+        <if test="memberStatus!=null">
+            member_status = #{memberStatus,jdbcType=TINYINT},
+        </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhMember">
+    update xgwh_member
+    set member_username = #{memberUsername,jdbcType=VARCHAR},
+      member_password = #{memberPassword,jdbcType=VARCHAR},
+      member_gender = #{memberGender,jdbcType=TINYINT},
+      member_nickname = #{memberNickname,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=INTEGER},
+      last_time = #{lastTime,jdbcType=INTEGER},
+      last_ip = #{lastIp,jdbcType=VARCHAR}
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+</mapper>

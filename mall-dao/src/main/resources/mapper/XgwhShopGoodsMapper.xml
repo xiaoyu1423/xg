@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhShopGoodsMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhShopGoods">
+    <id column="goods_id" jdbcType="INTEGER" property="goodsId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+    <result column="is_online" jdbcType="TINYINT" property="isOnline" />
+    <result column="is_two_copy" jdbcType="TINYINT" property="isTwoCopy" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="goods_cover" jdbcType="VARCHAR" property="goodsCover" />
+    <result column="cate_id" jdbcType="INTEGER" property="cateId" />
+    <result column="goods_desc" jdbcType="LONGVARCHAR" property="goodsDesc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    goods_id, goods_name, goods_price, is_online, is_two_copy, add_time, update_time, 
+    goods_cover, cate_id,goods_desc
+  </sql>
+  <sql id="Blob_Column_List">
+    goods_desc
+  </sql>
+  <!--resultMap="ResultMapWithBLOBs"-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+  from xgwh_shop_goods
+  where goods_id = #{goodsId,jdbcType=INTEGER}
+</select>
+  <select id="select"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_shop_goods
+  </select>
+  <select id="selects"   parameterType="com.xg.mall.po.XgwhShopGoods" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_shop_goods
+    <where>
+      <if test="goodsId!=null">
+        goods_id = #{goodsId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsName != null and goodsName != ''">
+        AND  goods_name = #{goodsName,jdbcType=VARCHAR}
+      </if>
+      <if test="goodsPrice != null">
+        AND  goods_price = #{goodsPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="isOnline != null">
+        AND  is_online = #{isOnline,jdbcType=TINYINT}
+      </if>
+      <if test="isTwoCopy != null">
+        AND  is_two_copy = #{isTwoCopy,jdbcType=TINYINT}
+      </if>
+        <if test="addTime!=null  and addTime != '' and endTime!=null  and endTime != ''">
+        AND add_time BETWEEN #{addTime,jdbcType=INTEGER} and  #{endTime,jdbcType=INTEGER}
+      </if>
+      <if test="updateTime != null">
+        AND update_time = #{updateTime,jdbcType=INTEGER}
+      </if>
+      <if test="goodsCover != null">
+        AND  goods_cover = #{goodsCover,jdbcType=VARCHAR}
+      </if>
+      <if test="cateId != null">
+        AND cate_id = #{cateId,jdbcType=INTEGER}
+      </if>
+      <if test="goodsDesc != null">
+        AND  goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
+      </if>
+    </where>
+    order by goods_id asc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_shop_goods
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhShopGoods">
+    insert into xgwh_shop_goods (goods_id, goods_name, goods_price, 
+      is_online, is_two_copy, add_time, 
+      update_time, goods_cover, cate_id, 
+      goods_desc)
+    values (#{goodsId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, 
+      #{isOnline,jdbcType=TINYINT}, #{isTwoCopy,jdbcType=TINYINT}, #{addTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=INTEGER}, #{goodsCover,jdbcType=VARCHAR}, #{cateId,jdbcType=INTEGER}, 
+      #{goodsDesc,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhShopGoods">
+    insert into xgwh_shop_goods
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="isOnline != null">
+        is_online,
+      </if>
+      <if test="isTwoCopy != null">
+        is_two_copy,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="goodsCover != null">
+        goods_cover,
+      </if>
+      <if test="cateId != null">
+        cate_id,
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isOnline != null">
+        #{isOnline,jdbcType=TINYINT},
+      </if>
+      <if test="isTwoCopy != null">
+        #{isTwoCopy,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCover != null">
+        #{goodsCover,jdbcType=VARCHAR},
+      </if>
+      <if test="cateId != null">
+        #{cateId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDesc != null">
+        #{goodsDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhShopGoods">
+    update xgwh_shop_goods
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isOnline != null">
+        is_online = #{isOnline,jdbcType=TINYINT},
+      </if>
+      <if test="isTwoCopy != null">
+        is_two_copy = #{isTwoCopy,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCover != null">
+        goods_cover = #{goodsCover,jdbcType=VARCHAR},
+      </if>
+      <if test="cateId != null">
+        cate_id = #{cateId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xg.mall.po.XgwhShopGoods">
+    update xgwh_shop_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      is_online = #{isOnline,jdbcType=TINYINT},
+      is_two_copy = #{isTwoCopy,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      goods_cover = #{goodsCover,jdbcType=VARCHAR},
+      cate_id = #{cateId,jdbcType=INTEGER},
+      goods_desc = #{goodsDesc,jdbcType=LONGVARCHAR}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhShopGoods">
+    update xgwh_shop_goods
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      is_online = #{isOnline,jdbcType=TINYINT},
+      is_two_copy = #{isTwoCopy,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      goods_cover = #{goodsCover,jdbcType=VARCHAR},
+      cate_id = #{cateId,jdbcType=INTEGER}
+    where goods_id = #{goodsId,jdbcType=INTEGER}
+  </update>
+</mapper>

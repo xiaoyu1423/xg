@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhShopOrderDetailMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhShopOrderDetail">
+    <id column="order_detail_id" jdbcType="INTEGER" property="orderDetailId" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="order_sn" jdbcType="VARCHAR" property="orderSn" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="goods_id" jdbcType="INTEGER" property="goodsId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    order_detail_id, goods_name, goods_price, order_id, order_sn, add_time, update_time, 
+    member_id, goods_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_shop_order_detail
+    where order_detail_id = #{orderDetailId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_shop_order_detail
+    where order_detail_id = #{orderDetailId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhShopOrderDetail">
+    insert into xgwh_shop_order_detail (order_detail_id, goods_name, goods_price, 
+      order_id, order_sn, add_time, 
+      update_time, member_id, goods_id
+      )
+    values (#{orderDetailId,jdbcType=INTEGER}, #{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, 
+      #{orderId,jdbcType=INTEGER}, #{orderSn,jdbcType=VARCHAR}, #{addTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhShopOrderDetail">
+    insert into xgwh_shop_order_detail
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderDetailId != null">
+        order_detail_id,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderSn != null">
+        order_sn,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="goodsId != null">
+        goods_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderDetailId != null">
+        #{orderDetailId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSn != null">
+        #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhShopOrderDetail">
+    update xgwh_shop_order_detail
+    <set>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderSn != null">
+        order_sn = #{orderSn,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where order_detail_id = #{orderDetailId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhShopOrderDetail">
+    update xgwh_shop_order_detail
+    set goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      order_id = #{orderId,jdbcType=INTEGER},
+      order_sn = #{orderSn,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      member_id = #{memberId,jdbcType=INTEGER},
+      goods_id = #{goodsId,jdbcType=INTEGER}
+    where order_detail_id = #{orderDetailId,jdbcType=INTEGER}
+  </update>
+</mapper>

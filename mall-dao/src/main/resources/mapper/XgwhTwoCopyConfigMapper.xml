@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhTwoCopyConfigMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhTwoCopyConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="money" jdbcType="DECIMAL" property="money" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="service_charge" jdbcType="DECIMAL" property="serviceCharge" />
+    <result column="buy_again_money" jdbcType="DECIMAL" property="buyAgainMoney" />
+    <result column="other_charge" jdbcType="DECIMAL" property="otherCharge" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, level, money, add_time, update_time, service_charge, buy_again_money, other_charge
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_two_copy_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_two_copy_config
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_two_copy_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhTwoCopyConfig">
+    insert into xgwh_two_copy_config (id, level, money, 
+      add_time, update_time, service_charge, 
+      buy_again_money, other_charge)
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{money,jdbcType=DECIMAL}, 
+      #{addTime,jdbcType=INTEGER}, #{updateTime,jdbcType=INTEGER}, #{serviceCharge,jdbcType=DECIMAL}, 
+      #{buyAgainMoney,jdbcType=DECIMAL}, #{otherCharge,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhTwoCopyConfig">
+    insert into xgwh_two_copy_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="serviceCharge != null">
+        service_charge,
+      </if>
+      <if test="buyAgainMoney != null">
+        buy_again_money,
+      </if>
+      <if test="otherCharge != null">
+        other_charge,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="serviceCharge != null">
+        #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="buyAgainMoney != null">
+        #{buyAgainMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="otherCharge != null">
+        #{otherCharge,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhTwoCopyConfig">
+    update xgwh_two_copy_config
+    <set>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="serviceCharge != null">
+        service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      </if>
+      <if test="buyAgainMoney != null">
+        buy_again_money = #{buyAgainMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="otherCharge != null">
+        other_charge = #{otherCharge,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhTwoCopyConfig">
+    update xgwh_two_copy_config
+    set level = #{level,jdbcType=INTEGER},
+      money = #{money,jdbcType=DECIMAL},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      service_charge = #{serviceCharge,jdbcType=DECIMAL},
+      buy_again_money = #{buyAgainMoney,jdbcType=DECIMAL},
+      other_charge = #{otherCharge,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

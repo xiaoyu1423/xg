@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhWithdrawDepositMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhWithdrawDeposit">
+    <id column="withdraw_id" jdbcType="INTEGER" property="withdrawId" />
+    <result column="withdraw_money" jdbcType="DECIMAL" property="withdrawMoney" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="withdraw_status" jdbcType="TINYINT" property="withdrawStatus" />
+    <result column="withdraw_alipay" jdbcType="VARCHAR" property="withdrawAlipay" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="out_trade_no" jdbcType="VARCHAR" property="outTradeNo" />
+    <result column="counts" jdbcType="INTEGER" property="counts" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    withdraw_id, withdraw_money, add_time, update_time, withdraw_status, withdraw_alipay, 
+    member_id, out_trade_no
+  </sql>
+    <select id="count" resultType="java.lang.Integer">
+        select
+        COUNT(*)
+        from xgwh_withdraw_deposit
+        <where>
+            <if test="memberId!=null">
+                member_id = #{memberId,jdbcType=INTEGER}
+            </if>
+            <if test="outTradeNo!=null and outTradeNo!=''">
+                AND out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+            </if>
+            <if test="withdrawAlipay!=null">
+                AND withdraw_alipay = #{withdrawAlipay,jdbcType=INTEGER}
+            </if>
+            <if test="withdrawStatus!=null">
+                AND withdraw_status = #{withdrawStatus,jdbcType=TINYINT}
+            </if>
+            <if test="addTime!=null and intEndTime!=null and addTime!='' and intEndTime!=''">
+                AND add_time between #{addTime,jdbcType=INTEGER} and #{intEndTime,jdbcType=INTEGER}
+            </if>
+        </where>
+    </select>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_withdraw_deposit
+    <where>
+      <if test="memberId!=null">
+        member_id = #{memberId,jdbcType=INTEGER}
+      </if>
+      <if test="outTradeNo!=null and outTradeNo!=''">
+        AND out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+      </if>
+      <if test="withdrawAlipay!=null">
+        AND  withdraw_alipay = #{withdrawAlipay,jdbcType=INTEGER}
+      </if>
+      <if test="withdrawStatus!=null">
+        AND withdraw_status = #{withdrawStatus,jdbcType=TINYINT}
+    </if>
+        <if test="addTime!=null and intEndTime!=null and addTime!='' and intEndTime!=''">
+            AND add_time between #{addTime,jdbcType=INTEGER} and #{intEndTime,jdbcType=INTEGER}
+      </if>
+    </where>
+      order by withdraw_id desc LIMIT #{page,jdbcType=INTEGER},#{pageNum,jdbcType=INTEGER}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_withdraw_deposit
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER}
+  </select>
+  <select id="dayWithdrawCounts" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(*) AS counts
+    from xgwh_withdraw_deposit
+      where member_id = #{memberId,jdbcType=INTEGER} AND add_time &gt; CAST(SYSDATE()AS DATE);
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_withdraw_deposit
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhWithdrawDeposit">
+    insert into xgwh_withdraw_deposit (withdraw_id, withdraw_money, add_time, 
+      update_time, withdraw_status, withdraw_alipay, 
+      member_id, out_trade_no)
+    values (#{withdrawId,jdbcType=INTEGER}, #{withdrawMoney,jdbcType=DECIMAL}, #{addTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=INTEGER}, #{withdrawStatus,jdbcType=TINYINT}, #{withdrawAlipay,jdbcType=VARCHAR}, 
+      #{memberId,jdbcType=INTEGER}, #{outTradeNo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhWithdrawDeposit">
+    insert into xgwh_withdraw_deposit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="withdrawId != null">
+        withdraw_id,
+      </if>
+      <if test="withdrawMoney != null">
+        withdraw_money,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="withdrawStatus != null">
+        withdraw_status,
+      </if>
+      <if test="withdrawAlipay != null">
+        withdraw_alipay,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+      <if test="outTradeNo != null">
+        out_trade_no,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="withdrawId != null">
+        #{withdrawId,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawMoney != null">
+        #{withdrawMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawStatus != null">
+        #{withdrawStatus,jdbcType=TINYINT},
+      </if>
+      <if test="withdrawAlipay != null">
+        #{withdrawAlipay,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhWithdrawDeposit">
+    update xgwh_withdraw_deposit
+    <set>
+      <if test="withdrawMoney != null">
+        withdraw_money = #{withdrawMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="withdrawStatus != null">
+        withdraw_status = #{withdrawStatus,jdbcType=TINYINT},
+      </if>
+      <if test="withdrawAlipay != null">
+        withdraw_alipay = #{withdrawAlipay,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="outTradeNo != null">
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhWithdrawDeposit">
+    update xgwh_withdraw_deposit
+    set withdraw_money = #{withdrawMoney,jdbcType=DECIMAL},
+      add_time = #{addTime,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER},
+      withdraw_status = #{withdrawStatus,jdbcType=TINYINT},
+      withdraw_alipay = #{withdrawAlipay,jdbcType=VARCHAR},
+      member_id = #{memberId,jdbcType=INTEGER},
+      out_trade_no = #{outTradeNo,jdbcType=VARCHAR}
+    where withdraw_id = #{withdrawId,jdbcType=INTEGER}
+  </update>
+</mapper>

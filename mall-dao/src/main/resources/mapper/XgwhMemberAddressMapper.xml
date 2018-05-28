@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhMemberAddressMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhMemberAddress">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="street" jdbcType="VARCHAR" property="street" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="province_val" jdbcType="INTEGER" property="provinceVal" />
+    <result column="city_val" jdbcType="INTEGER" property="cityVal" />
+    <result column="county_val" jdbcType="INTEGER" property="countyVal" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="update_time" jdbcType="INTEGER" property="updateTime" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_name, phone, province, city, county, street, type, province_val, city_val, 
+    county_val, add_time, update_time, member_id
+  </sql>
+  <select id="select" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_member_address
+      <where>
+          <if test="memberId!=null">
+              member_id = #{memberId,jdbcType=INTEGER}
+          </if>
+          <if test="type!=null">
+              AND type = #{type,jdbcType=TINYINT}
+          </if>
+      </where>
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from xgwh_member_address
+    </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_member_address
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_member_address
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhMemberAddress">
+    insert into xgwh_member_address (id, user_name, phone, 
+      province, city, county, 
+      street, type, province_val, 
+      city_val, county_val, add_time, 
+      update_time, member_id)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, 
+      #{street,jdbcType=VARCHAR}, #{type,jdbcType=TINYINT}, #{provinceVal,jdbcType=INTEGER}, 
+      #{cityVal,jdbcType=INTEGER}, #{countyVal,jdbcType=INTEGER}, #{addTime,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=INTEGER}, #{memberId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhMemberAddress">
+    insert into xgwh_member_address
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="street != null">
+        street,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="provinceVal != null">
+        province_val,
+      </if>
+      <if test="cityVal != null">
+        city_val,
+      </if>
+      <if test="countyVal != null">
+        county_val,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="memberId != null">
+        member_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null">
+        #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="provinceVal != null">
+        #{provinceVal,jdbcType=INTEGER},
+      </if>
+      <if test="cityVal != null">
+        #{cityVal,jdbcType=INTEGER},
+      </if>
+      <if test="countyVal != null">
+        #{countyVal,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        #{memberId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhMemberAddress">
+    update xgwh_member_address
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="street != null">
+        street = #{street,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="provinceVal != null">
+        province_val = #{provinceVal,jdbcType=INTEGER},
+      </if>
+      <if test="cityVal != null">
+        city_val = #{cityVal,jdbcType=INTEGER},
+      </if>
+      <if test="countyVal != null">
+        county_val = #{countyVal,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+      <if test="memberId != null">
+        member_id = #{memberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey">
+    update xgwh_member_address
+    set
+       type = #{type,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+</mapper>

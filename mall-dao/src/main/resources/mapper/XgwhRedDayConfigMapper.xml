@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhRedDayConfigMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhRedDayConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="red_rate" jdbcType="DECIMAL" property="redRate" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, red_rate, add_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_red_day_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+      from xgwh_red_day_config order by id desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_red_day_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhRedDayConfig">
+    insert into xgwh_red_day_config (id, red_rate, add_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{redRate,jdbcType=DECIMAL}, #{addTime,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhRedDayConfig">
+    insert into xgwh_red_day_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="redRate != null">
+        red_rate,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="redRate != null">
+        #{redRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhRedDayConfig">
+    update xgwh_red_day_config
+    <set>
+      <if test="redRate != null">
+        red_rate = #{redRate,jdbcType=DECIMAL},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhRedDayConfig">
+    update xgwh_red_day_config
+    set red_rate = #{redRate,jdbcType=DECIMAL},
+      add_time = #{addTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

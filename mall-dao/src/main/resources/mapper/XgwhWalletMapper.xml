@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xg.mall.dao.XgwhWalletMapper">
+  <resultMap id="BaseResultMap" type="com.xg.mall.po.XgwhWallet">
+    <id column="wallet_id" jdbcType="INTEGER" property="walletId" />
+    <result column="wallet_name" jdbcType="VARCHAR" property="walletName" />
+    <result column="wallet_type" jdbcType="TINYINT" property="walletType" />
+    <result column="add_time" jdbcType="INTEGER" property="addTime" />
+    <result column="wallet_status" jdbcType="TINYINT" property="walletStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    wallet_id, wallet_name, wallet_type, add_time,wallet_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from xgwh_wallet
+    where wallet_id = #{walletId,jdbcType=INTEGER}
+  </select>
+  <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from xgwh_wallet
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from xgwh_wallet
+    where wallet_id = #{walletId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xg.mall.po.XgwhWallet">
+    insert into xgwh_wallet (wallet_id, wallet_name, wallet_type, 
+      add_time)
+    values (#{walletId,jdbcType=INTEGER}, #{walletName,jdbcType=VARCHAR}, #{walletType,jdbcType=TINYINT}, 
+      #{addTime,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xg.mall.po.XgwhWallet">
+    insert into xgwh_wallet
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="walletId != null">
+        wallet_id,
+      </if>
+      <if test="walletName != null">
+        wallet_name,
+      </if>
+      <if test="walletType != null">
+        wallet_type,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="walletId != null">
+        #{walletId,jdbcType=INTEGER},
+      </if>
+      <if test="walletName != null">
+        #{walletName,jdbcType=VARCHAR},
+      </if>
+      <if test="walletType != null">
+        #{walletType,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xg.mall.po.XgwhWallet">
+    update xgwh_wallet
+    <set>
+      <if test="walletName != null">
+        wallet_name = #{walletName,jdbcType=VARCHAR},
+      </if>
+      <if test="walletType != null">
+        wallet_type = #{walletType,jdbcType=TINYINT},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=INTEGER},
+      </if>
+      <if test="walletStatus != null">
+        wallet_status = #{walletStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where wallet_id = #{walletId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xg.mall.po.XgwhWallet">
+    update xgwh_wallet
+    set wallet_name = #{walletName,jdbcType=VARCHAR},
+      wallet_type = #{walletType,jdbcType=TINYINT},
+      add_time = #{addTime,jdbcType=INTEGER}
+    where wallet_id = #{walletId,jdbcType=INTEGER}
+  </update>
+</mapper>
